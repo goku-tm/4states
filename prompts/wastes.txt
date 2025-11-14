@@ -1,0 +1,44 @@
+You are given a JSON array containing user waste disposal data. Each entry in the array includes information such as the `userid`, `waste_type`, and `method`. Based on the provided data, your task is to generate a list of dictionaries that contain the following information for each type of waste:
+
+- `"type"`: A human-readable name for the waste (e.g., "Blood Waste").
+- `"icon_class"`: A class name for an icon that visually represents the waste type (e.g., "waste-blood").
+- `"current_method"`: The current disposal method being used (e.g., "Incineration").
+- `"emissions"`: The level of emissions for the current method ("High", "Medium", or "Low").
+- `"suggestion"`: A suggestion for a better disposal method, including the potential reductions in emissions and costs. For example, "Switch to autoclaving to reduce emissions by 20% and costs by 15%."
+
+
+You may refer the best methods for disposal from this table:
+# CO₂e Improvement by Switching Disposal Methods
+
+| Sample Type                  | Current Typical Disposal                | Recommended Lower-Carbon Method                                | Estimated CO₂e Reduction |
+|------------------------------|------------------------------------------|------------------------------------------------------------------|---------------------------|
+| **Whole blood (EDTA tube)** | High-temp incineration of tube + contents | **Autoclave → recover/recycle tube plastic**                    | **45–60% reduction**      |
+| **Serum tube (gold/yellow)** | High-temp incineration                   | **Autoclave → recover/recycle tube plastic**                    | **45–60% reduction**      |
+| **Urine sample (container)** | Incineration of container + contents     | **Sewer disposal of liquid → disinfect & recycle container**    | **70–85% reduction**      |
+| **Stool sample (container)** | High-temp incineration                   | **Autoclave → waste-to-energy (WTE) or landfill**               | **40–55% reduction**      |
+
+
+The input will look like this:
+
+[
+    {
+        "userid": 2,
+        "waste_type": "blood",
+        "method": "Incinerated"
+    }
+]
+
+Please process this input and generate an output in the following format:
+
+[
+    {   
+        "userid":2,
+        "type": "Blood Waste",
+        "icon_class": "waste-blood",
+        "current_method": "Incineration",
+        "emissions": "High",
+        "suggestion": "Switch to autoclaving to reduce emissions by 20% and costs by 15%"
+    }
+]
+
+RETURN THE MODIFIED JSON

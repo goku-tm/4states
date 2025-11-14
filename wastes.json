@@ -1,0 +1,17 @@
+[
+    
+    {
+        "type": "Blood Waste",
+        "icon_class": "waste-blood",
+        "current_method": "Incineration",
+        "emissions": "High",
+        "suggestion": "Switch to autoclaving to reduce emissions by 20% and costs by 15%"
+    },
+    {
+        "type": "Surgical Kits",
+        "icon_class": "waste-surgical",
+        "current_method": "Recycling",
+        "emissions": "Medium",
+        "suggestion": "Partner with reusable kit providers to lower emissions further"
+    }
+]

@@ -3,6 +3,7 @@
     "hospital_profile": {
       "name": "Apollo City Hospital",
       "beds": 500,
+      "id":2,
       "annual_or_cases": 5000,
       "annual_opd_visits": 200000
     },

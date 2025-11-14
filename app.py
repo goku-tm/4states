@@ -14,6 +14,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 USERS_FILE = os.path.join(BASE_DIR, "users.json")
 EMISSIONS_FILE = os.path.join(BASE_DIR, "emissions.json")
 DATA_FILE = os.path.join(BASE_DIR, "data.json")
+WASTE_FILE = os.path.join(BASE_DIR,'wastes.json')
 
 
 
@@ -146,6 +147,13 @@ def load_market_data():
     if not os.path.exists(DATA_FILE):
         return None
     with open(DATA_FILE, "r") as f:
+        return json.load(f)
+    
+def load_waste_data():
+    """Load the big decarbonisation JSON for a single hospital."""
+    if not os.path.exists(WASTE_FILE):
+        return None
+    with open(WASTE_FILE, "r") as f:
         return json.load(f)
 
 
@@ -436,6 +444,59 @@ def marketplace():
     )
 
 
+@app.route("/waste_disposal")
+def waste_disposal():
+    incineration_data = 40
+    recycling_data = 30
+    landfill_data = 30
+    waste_insights = load_waste_data()
+    print(waste_insights)
+    if len(waste_insights)<1:
+        return redirect(url_for("dashboard"))
+    if len(waste_insights[0]) < 5:
+        path = os.path.join(BASE_DIR,'prompts/wastes.txt')
+        with open(path,'r') as f:
+            prompt = f.read()
+        prompt += "current input is:\n"+str(waste_insights)
+        waste_insights = generate_response(prompt)
+    
+    print(waste_insights)
+
+    return render_template(
+        "waste_disposal.html",
+        incineration=incineration_data,
+        recycling=recycling_data,
+        landfill=landfill_data,
+        vendor_name="EcoWaste Inc.",
+        waste_insights=waste_insights,
+        user_email="test@example.com"
+    )
+
+def generate_response(text):
+    import requests
+    import json
+
+    url = "http://10.11.7.65:11434/api/generate"
+
+    payload = {
+        "model": "gemma3:27B",
+        "prompt": text,
+        "stream": False
+    }
+
+    try:
+        response = requests.post(url, json=payload, timeout=60)
+
+        if response.status_code != 200:
+            raise Exception(f"Ollama error {response.status_code}: {response.text}")
+
+        data = response.json()
+
+        # Ollama returns full text in `response` field
+        return data.get("response", "")
+
+    except requests.exceptions.RequestException as e:
+        return f"Request failed: {e}"
 
 
 @app.route("/logout")
